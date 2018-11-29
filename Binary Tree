@@ -1,0 +1,167 @@
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+
+struct node {
+	int value;
+	node *left;
+	node *right;
+};
+
+class BST
+{
+public:
+
+	BST()
+	{
+		root = NULL;
+	};
+
+	void burn() {
+		burn(root);
+	}
+
+	void add(int i) {
+		if (root != NULL) 
+			add(i, root);
+		else {
+			root = new node;
+			root->value = i;
+			root->left = NULL;
+			root->right = NULL;
+		}
+		
+	}
+
+	void input() {
+		bool run(1);
+		int input;
+		cout << "Please input integers to be searched. Entering a 0 will end input.";
+		do {
+			cout << endl;
+			cin >> input;
+			if (input == 0)
+				run = 0;
+			else
+				add(input);
+		} while (run);
+	}
+
+	bool search(int i) {
+
+		return search(i, root);
+	}
+
+	void inorder_print(){
+		inorder_print(root);
+		cout << "\n";
+	}
+
+	void postorder_print(){
+		postorder_print(root);
+		cout << "\n";
+	}
+
+	void preorder_print(){
+		preorder_print(root);
+		cout << "\n";
+	}
+
+
+
+
+
+private:
+	node *root;
+
+	void burn(node *leaf) {
+		if (leaf != NULL) {
+			burn(leaf->left);
+			burn(leaf->right);
+			delete leaf;
+		}
+	}
+
+	bool search(int i, node *leaf) {
+		if (leaf != NULL) {
+			if (i == leaf->value) {
+				return true;
+			}
+			if (i < leaf->value)
+				return search(i, leaf->left);
+			else
+				return search(i, leaf->right);
+		}
+		else
+			return NULL;
+	}
+
+	void add(int i, node *leaf) {
+		if (i < leaf->value) {
+			if(leaf->left != NULL)
+				add(i, leaf->left);
+			else {
+				leaf->left = new node;
+				leaf->left->value = i;
+				leaf->left->left = NULL;
+				leaf->left->right = NULL;
+			}
+		}
+		else if (i >= leaf->value) {
+			if (leaf->right != NULL) 
+				add(i, leaf->right);
+			else {
+				leaf->right = new node;
+				leaf->right->value = i;
+				leaf->right->right = NULL;
+				leaf->right->left = NULL;
+			}
+		}
+	}
+
+	void inorder_print(node *leaf){
+		if(leaf != NULL){
+			inorder_print(leaf->left);
+			cout << leaf->value << ",";
+			inorder_print(leaf->right);
+		}
+	}
+
+	void postorder_print(node *leaf){
+		if(leaf != NULL){
+			inorder_print(leaf->left);
+			inorder_print(leaf->right);
+			cout << leaf->value << ",";
+		}
+	}
+
+	void preorder_print(node *leaf){
+		if(leaf != NULL){
+			cout << leaf->value << ",";
+			inorder_print(leaf->left);
+			inorder_print(leaf->right);
+		}
+	}
+
+};
+
+int main() {
+	int s;
+	BST *tree = new BST();
+
+	tree->input();
+	cout << "What number would you like to search for?" << endl;
+	cin >> s;
+
+	if (tree->search(s))
+		cout << "True" << endl;
+	else
+		cout << "False" << endl;
+
+	tree->inorder_print();
+
+	delete tree;
+
+	system("pause");
+}
+
